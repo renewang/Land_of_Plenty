@@ -1,0 +1,4 @@
+Sitemap: https://renewang.github.io/land_of_plenty/sitemapindex.xml
+
+User-Agent: *
+Host: renewang.github.io
