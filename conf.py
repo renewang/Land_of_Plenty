@@ -6,7 +6,6 @@ import time
 # !! This is the configuration of Nikola. !! #
 # !!  You should edit it to your liking.  !! #
 
-
 # ! Some settings can be different in different languages.
 # ! A comment stating (translatable) is used to denote those.
 # ! There are two ways to specify a translatable setting:
@@ -135,6 +134,7 @@ NAVIGATION_LINKS = {
         ("/archive.html", "Archive"),
         ("/categories/", "Tags"),
         ("/rss.xml", "RSS feed"),
+        ("https://renewang.github.io", "ReneWangritte")
     ),
 }
 
@@ -233,7 +233,7 @@ TIMEZONE = "Asia/Taipei"
 # not set the default Nikola mapping is used.
 
 # LOCALES = {}
-# LOCALE_FALLBACK = None
+LOCALE_FALLBACK = 'en_US'
 LOCALE_DEFAULT = 'en_US'
 
 # One or more folders containing files to be copied as-is into the output.
@@ -797,7 +797,7 @@ IMAGE_FOLDERS = {'images': 'images'}
 # )
 
 # Show teasers (instead of full posts) in indexes? Defaults to False.
-# INDEX_TEASERS = False
+INDEX_TEASERS = True 
 
 # HTML fragments with the Read more... links.
 # The following tags exist and are replaced for you:
@@ -970,10 +970,38 @@ PRETTY_URLS = True
 # USE_KATEX = False
 
 # Do you want to customize the nbconversion of your IPython notebook?
-# IPYNB_CONFIG = {}
+#TODO: temporarily put here
+from traitlets.config import Config
+from nbconvert.preprocessors import Preprocessor
+class InputCellHider(Preprocessor):
+  """A quick modification for pelican ipynb plugin"""
+
+  def preprocess(self, nb, resources): 
+      nb, resources = super(InputCellHider, self).preprocess(nb, resources)
+      extracted = []
+      for c in nb.cells:
+          if not c['metadata'].get('hide_output', False):
+              extracted.append(c)
+      nb.cells = extracted 
+      return nb, resources
+
+  def preprocess_cell(self, cell, resources, index):
+    if 'cell_type' in cell and cell['cell_type'] == 'code':
+      if 'source' in cell:
+        is_ignore = -1
+        try:
+          is_ignore = cell['source'].index('#ignore')
+        except ValueError as e:
+          pass
+        if is_ignore >= 0:
+            del cell['source']
+    return cell, resources
+
+IPYNB_CONFIG = {'Exporter': {'preprocessors': [InputCellHider], 
+                             'template_file': 'post'}}
 # With the following example configuration you can use a custom jinja template
 # called `toggle.tpl` which has to be located in your site/blog main folder:
-# IPYNB_CONFIG = {'Exporter':{'template_file': 'toggle'}}
+#IPYNB_CONFIG = {'Exporter':{'template_file': 'toggle'}}
 
 # What Markdown extensions to enable?
 # You will also get gist, nikola and podcast because those are
@@ -1212,3 +1240,4 @@ GLOBAL_CONTEXT = {}
 # GLOBAL_CONTEXT as parameter when the template is about to be
 # rendered
 GLOBAL_CONTEXT_FILLER = []
+
