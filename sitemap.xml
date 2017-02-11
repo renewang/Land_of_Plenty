@@ -7,19 +7,31 @@
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <url>
   <loc>https://renewang.github.io/land_of_plenty/</loc>
-  <lastmod>2016-10-25T03:16:00Z</lastmod>
+  <lastmod>2017-02-02T05:27:00Z</lastmod>
  </url>
  <url>
-  <loc>https://renewang.github.io/land_of_plenty/2016/</loc>
-  <lastmod>2016-10-25T03:16:00Z</lastmod>
+  <loc>https://renewang.github.io/land_of_plenty/2017/</loc>
+  <lastmod>2017-02-02T05:27:00Z</lastmod>
  </url>
  <url>
   <loc>https://renewang.github.io/land_of_plenty/archive.html</loc>
-  <lastmod>2016-11-28T02:49:00Z</lastmod>
+  <lastmod>2017-02-11T19:36:00Z</lastmod>
  </url>
  <url>
   <loc>https://renewang.github.io/land_of_plenty/categories/</loc>
-  <lastmod>2016-10-25T03:08:00Z</lastmod>
+  <lastmod>2017-02-11T18:56:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://renewang.github.io/land_of_plenty/categories/cat_in-practice/</loc>
+  <lastmod>2017-02-11T18:55:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://renewang.github.io/land_of_plenty/categories/in-programming/</loc>
+  <lastmod>2017-02-02T05:27:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://renewang.github.io/land_of_plenty/categories/kaggle/</loc>
+  <lastmod>2017-02-11T18:55:00Z</lastmod>
  </url>
  <url>
   <loc>https://renewang.github.io/land_of_plenty/galleries/</loc>
@@ -39,7 +51,11 @@
  </url>
  <url>
   <loc>https://renewang.github.io/land_of_plenty/listings/hello.py.html</loc>
-  <lastmod>2016-11-28T02:49:00Z</lastmod>
+  <lastmod>2017-02-11T19:36:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://renewang.github.io/land_of_plenty/posts/learning-cpython-internals-interpreter-and-source-code-overview/</loc>
+  <lastmod>2017-02-02T05:27:00Z</lastmod>
  </url>
  <url>
   <loc>https://renewang.github.io/land_of_plenty/posts/on-the-second-thought/</loc>
@@ -47,7 +63,7 @@
  </url>
  <url>
   <loc>https://renewang.github.io/land_of_plenty/posts/the-first-teeny-tiny-steps-on-sentiment-analysis/</loc>
-  <lastmod>2016-10-25T03:16:00Z</lastmod>
+  <lastmod>2017-02-02T03:46:00Z</lastmod>
  </url>
  <url>
   <loc>https://renewang.github.io/land_of_plenty/stories/about-nikola/</loc>
