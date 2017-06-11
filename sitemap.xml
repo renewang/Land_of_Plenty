@@ -15,15 +15,19 @@
  </url>
  <url>
   <loc>https://renewang.github.io/land_of_plenty/archive.html</loc>
-  <lastmod>2017-02-11T19:36:00Z</lastmod>
+  <lastmod>2017-06-11T08:43:00Z</lastmod>
  </url>
  <url>
   <loc>https://renewang.github.io/land_of_plenty/categories/</loc>
-  <lastmod>2017-02-11T18:56:00Z</lastmod>
+  <lastmod>2017-06-11T08:43:00Z</lastmod>
  </url>
  <url>
   <loc>https://renewang.github.io/land_of_plenty/categories/cat_in-practice/</loc>
   <lastmod>2017-02-11T18:55:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://renewang.github.io/land_of_plenty/categories/cat_in-programming/</loc>
+  <lastmod>2017-06-11T08:43:00Z</lastmod>
  </url>
  <url>
   <loc>https://renewang.github.io/land_of_plenty/categories/in-programming/</loc>
@@ -32,6 +36,22 @@
  <url>
   <loc>https://renewang.github.io/land_of_plenty/categories/kaggle/</loc>
   <lastmod>2017-02-11T18:55:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://renewang.github.io/land_of_plenty/categories/machine-learing/</loc>
+  <lastmod>2017-06-11T08:43:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://renewang.github.io/land_of_plenty/categories/machine-learning/</loc>
+  <lastmod>2017-06-11T08:43:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://renewang.github.io/land_of_plenty/categories/nlp/</loc>
+  <lastmod>2017-06-11T08:43:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://renewang.github.io/land_of_plenty/categories/python/</loc>
+  <lastmod>2017-06-11T08:43:00Z</lastmod>
  </url>
  <url>
   <loc>https://renewang.github.io/land_of_plenty/galleries/</loc>
@@ -51,7 +71,11 @@
  </url>
  <url>
   <loc>https://renewang.github.io/land_of_plenty/listings/hello.py.html</loc>
-  <lastmod>2017-02-11T19:36:00Z</lastmod>
+  <lastmod>2017-06-11T08:43:00Z</lastmod>
+ </url>
+ <url>
+  <loc>https://renewang.github.io/land_of_plenty/posts/classify-trees-of-sentimental-mood/</loc>
+  <lastmod>2017-06-11T08:19:00Z</lastmod>
  </url>
  <url>
   <loc>https://renewang.github.io/land_of_plenty/posts/learning-cpython-internals-interpreter-and-source-code-overview/</loc>

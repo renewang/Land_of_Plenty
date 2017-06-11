@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Land Of Plenty (Machine Learning)</title><link>https://renewang.github.io/land_of_plenty/</link><description></description><atom:link href="https://renewang.github.io/land_of_plenty/categories/machine-learning.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><lastBuildDate>Sun, 11 Jun 2017 08:45:57 GMT</lastBuildDate><generator>https://getnikola.com/</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Classify Trees of Sentimental Mood</title><link>https://renewang.github.io/land_of_plenty/posts/classify-trees-of-sentimental-mood/</link><dc:creator>Rene Wang</dc:creator><description>&lt;div&gt;&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;As &lt;a href="https://renewang.github.io/land_of_plenty/posts/on-the-second-thought/"&gt;previous&lt;/a&gt; put, the information content to classify the root sentiment label based on the composition of it children labels decreases with increasing levels in parsing tree (the depth from root to the child node). However, in order to qualify the importance of tree features (not just quantify), decision tree will be used to measure how important level and label at children node as joint features to classify root sentiment label. Firstly, I would like to assume syntatic structure of each sentence is well captured by the parsing trees of highest statical significance; therefore suffice to use the most significant one for study. By assuming this, the uncertainty of children labels due to parsing tree construction could be greatly excluded and the true labels assigned through Amazon Turfs crowd work will be used. By doing so, an emperical upper bound of root sentiment classification error based on level and label joint features can be estimated. In the following subsequent work, I will replace children labels with random predictions to obtain a lower error bound of how the uncertainty of children label predictions introduced into classification framework and decrease the accuracy.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://renewang.github.io/land_of_plenty/posts/classify-trees-of-sentimental-mood/"&gt;Read more…&lt;/a&gt; (14 min remaining to read)&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description><category>Machine Learning</category><category>NLP</category><guid>https://renewang.github.io/land_of_plenty/posts/classify-trees-of-sentimental-mood/</guid><pubDate>Sun, 11 Jun 2017 08:17:54 GMT</pubDate></item><item><title>The First Teeny Tiny Steps on Sentiment Analysis</title><link>https://renewang.github.io/land_of_plenty/posts/the-first-teeny-tiny-steps-on-sentiment-analysis/</link><dc:creator>Rene Wang</dc:creator><description>&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;Have been spending/struggling a great deal of time on studying movie reivew data and exploring Natural Language Processing (NLP) field, I encountered some typical problems of machine learning: imbalanced training and high dimensional/sparse features. Firstly, I will use the widely applied classifier in text classification circle to address imbalanced training problem and features selection/reduction/transformation in following posts.&lt;/p&gt;
+&lt;p&gt;For text classification, the most frequently used classifier is Naive Bayes which employs Bayesian inference regime to maximize posterior probability. However, since the priors are often treated as uniform and can be disgarding as constant during estimation, the maximum a posteriori (MAP) can be simplified as maximizing likelihood problem. That is, how likely the observed data fits the presuming model?  (The inverse is log-likelihood ratio test problem to test how strongly model is supported by acquired samples).&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://renewang.github.io/land_of_plenty/posts/the-first-teeny-tiny-steps-on-sentiment-analysis/"&gt;Read more…&lt;/a&gt; (8 min remaining to read)&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description><category>Machine Learning</category><category>NLP</category><guid>https://renewang.github.io/land_of_plenty/posts/the-first-teeny-tiny-steps-on-sentiment-analysis/</guid><pubDate>Tue, 17 Jan 2017 03:15:32 GMT</pubDate></item></channel></rss>
