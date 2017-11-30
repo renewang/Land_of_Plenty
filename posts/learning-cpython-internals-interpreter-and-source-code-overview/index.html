@@ -2,18 +2,17 @@
 <html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
 <head>
 <meta charset="utf-8">
-<base href="https://renewang.github.io/land_of_plenty/posts/learning-cpython-internals-interpreter-and-source-code-overview/">
 <meta name="description" content="introduce cpython c api">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Learning CPython Internals - Interpreter and source code overview | Land Of Plenty</title>
 <link href="../../assets/css/all-nocdn.css" rel="stylesheet" type="text/css">
 <link href="../../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
 <link href="../../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
-<meta content="#5670d4" name="theme-color">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
 <link rel="alternate" type="application/rss+xml" title="RSS" href="../../rss.xml">
 <link rel="canonical" href="https://renewang.github.io/land_of_plenty/posts/learning-cpython-internals-interpreter-and-source-code-overview/">
-<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="description" itemprop="description" content="introduce cpython c api">
-<meta name="author" content="Rene Wang">
+<!--[if lt IE 9]><script src="../../assets/js/html5.js"></script><![endif]--><meta name="author" content="Rene Wang">
 <link rel="prev" href="../on-the-second-thought/" title="On The Second Thought ..." type="text/html">
 <link rel="next" href="../classify-trees-of-sentimental-mood/" title="Classify Trees of Sentimental Mood" type="text/html">
 <meta property="og:site_name" content="Land Of Plenty">
@@ -81,7 +80,7 @@
 <article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="." class="u-url">Learning CPython Internals - Interpreter and source code overview</a></h1>
 
         <div class="metadata">
-            <p class="byline author vcard"><span class="byline-name fn">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
                     Rene Wang
             </span></p>
             <p class="dateline"><a href="." rel="bookmark"><time class="published dt-published" datetime="2017-02-02T12:24:51+08:00" itemprop="datePublished" title="2017-02-02 12:24">2017-02-02 12:24</time></a></p>
@@ -92,10 +91,9 @@
 
             
         </p>
-<p class="sourceline"><a href="index.ipynb" id="sourcelink">Source</a></p>
+<p class="sourceline"><a href="index.ipynb" class="sourcelink">Source</a></p>
 
-                <meta name="description" itemprop="description" content="introduce cpython c api">
-</div>
+        </div>
         
 
     </header><div class="e-content entry-content" itemprop="articleBody text">
@@ -109,7 +107,8 @@
 <p>However, this course is taught with python 2.7. Some pieces are missing or not clarified in this mini-series lecture. Firstly, python 3.x diverges greatly from python 2.7 not only the python syntax itself but also the corresponding c api. Some materials of this course is slightly inapplicable to latest python version. Secondly, this series simply touches the surface of python c api and doesn't have sufficient time to dig deeper. I would like to fill up the gap and hopefully would gain some feedbacks from real cpython experts.</p>
 <!-- TEASER_END -->
 
-<p>For most interpreter languages, they are built on top of other compiled language, mostly C. The general mechanism is the interpreter will parse the source code, construct a syntax tree, turn the source code into a series of byte code instructions (opcode) and rely on the low level language to execute the byte code instructions. It's like executing code on a "process virtual machine" without dealing with underlying hardware details but the interpreter, an executable process itself. Using "process virtual machine" is to distinguish "system virtual machine" widely used as guest OS. The interpreter will provide a set of opcode specs which is similar to the instructions in assembly. The process virtual machine model will then fetch, decode and execute instructions as a real CPU does to handle machine instructions. The implementation of process virtual machine. There are general two major implementations for process virtual machine: stack-based and register-based. One can refer <a href="https://markfaction.wordpress.com/2012/07/15/stack-based-vs-register-based-virtual-machine-architecture-and-the-dalvik-vm/">this link</a> for further explanation. Basically stack-based virtual machine is using a in-memory stack to store the operands and results of execution. By doing so, bypass storing the address of operands but simply refering the pointer to the top of stack and pop. For example, python uses a value stack to execute the opcodes and push the result onto the top of stack.</p>
+<p>For most interpreter languages, they are built on top of other compiled language, mostly C. The general mechanism is the interpreter will parse the source code, construct a syntax tree, turn the source code into a series of byte code instructions (opcode) and rely on the low level language to execute the byte code instructions. It's like executing code on a "process virtual machine" without dealing with underlying hardware details but the interpreter, an executable process itself. Using "process virtual machine" is to distinguish "system virtual machine" widely used as guest OS. The interpreter will provide a set of opcode specs which is similar to the instructions in assembly. The process virtual machine model will then fetch, decode and execute instructions as a real CPU does to handle machine instructions.</p>
+<p>There are general two major implementations for process virtual machine: stack-based and register-based. One can refer <a href="https://markfaction.wordpress.com/2012/07/15/stack-based-vs-register-based-virtual-machine-architecture-and-the-dalvik-vm/">this link</a> for further explanation. Basically stack-based virtual machine is using a in-memory stack to store the operands and results of execution. By doing so, bypass storing the address of operands but simply refering the pointer to the top of stack and pop. For example, python uses a value stack to execute the opcodes and push the result onto the top of stack.</p>
 <p>To illustrate how python intepreter works as a stack machine, we will need python built-in module <strong>"dis"</strong> to disassemble the byte codes and map the bytes to human readable instructions. Before using <strong>"dis"</strong>, we will need to compile the source into byte code. Following is a simple example:</p>
 
 </div>
@@ -179,9 +178,9 @@ Total stack size 3
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>compile</strong> function takes three arguments: the first is the source code in string which could either open a file and read in the python source or just give a raw string as the example. The second is a "faking" source code file name which does nothing important but logging for errors. Third argument is the mode to specify the kind of source. The possible values are <strong>'exec'</strong> for multiple statements and <strong>eval</strong> and <strong>single</strong> for single statement. Specifying <strong>'exec'</strong> will ensure the source code is compiled and dynamically executable.</p>
-<p>After you have compiled source code into byte code preresented as python code object, you can pass along into dis.dis functioni to disassemble. Other possible format other than code object can be also used, such as a function object or arbitrary python objects.</p>
-<p>The <strong>dis</strong> module actually take the python object and call in the following functions to parse the byte code. It's a lightweight interpreter simulator without actually executing the code logics of opcode. I also attach the call graph generated via <a href="http://pycallgraph.slowchop.com/en/master/">pycallgraph</a> which will give you an overview how dis.dis code is organized and prevent you from losing the code labyrinth while tracing.</p>
+<p><strong>compile</strong> function takes three arguments: the first is the source code in string which could either open a file and read in the python source or just give a raw string as the example. The second is a "faking" source code file name which does nothing important but logging for errors. Third argument is the mode to specify the kind of source. The possible values are <strong>'exec'</strong>, <strong>eval</strong> and <strong>single</strong>. Specify <strong>exec</strong> for multiple statements or single statement with extension module execution. Specify <strong>eval</strong> or <strong>single</strong> for single statement without extension module execution. Mostly, <strong>'exec'</strong> is required since it will ensure the source code is compiled and dynamically executable.</p>
+<p>After you have compiled source code into byte code and wrapped it with python code object, you can pass along into <strong>dis.dis</strong> function to disassemble. Other possible format other than code object can be also used, such as a function object or arbitrary python objects.</p>
+<p>What <strong>dis</strong> module actually does is invoking a series of functions in order and emulate interpreter without actually executing the code logics of opcode. I also attach the call graph generated via <a href="http://pycallgraph.slowchop.com/en/master/">pycallgraph</a> which will give you an overview how <strong>dis.dis</strong> code is organized and prevent you from losing the function call labyrinth while tracing source code.</p>
 
 </div>
 </div>
@@ -227,9 +226,9 @@ Total stack size 3
 <li>the column used for arguments (<em>dis._get_const_info</em> in pycallgraph figure)</li>
 <li>the string expressions of arguments</li>
 </ul>
-<p>For the opcode name, they are actually enum-like number in the C header. You can check out the corresponding integer number in Include/opcode.h. A simple rule to guess what these opcodes do without looking up references is speculating from the readable name. If the opcode name starts with <strong>LOAD_XXX</strong>, the functionality of this opcode is to lookup the local variable load from local variables and push the variable onto the stack; On the other hand, if the opcode name starts with <strong>STORE_XXX</strong>, the functionality of this opcode is to pop variable on the top of stack. But what a opcode actually does, one should look up the reference and also trace the C code to verify what reference said.</p>
-<p>For the offset of opcode, you can compute the size of an opcode by taking difference of two consecute opcodes offsets. For example, BINARY_ADD is an opcode of one byte size since it takes its two operands directly from the top of stack. And we can also estimate the total size of compiled byte codes should be 30 bytes. Generally speaking, the size of one opcode is not greater than 3 bytes but this can vary depending on what arguments need to be passed into opcode. The size of opcode could be bigger than three bytes with longer arguments. Those opcodes of greater size will have extra opcode as <strong>EXTENDED_ARG</strong> (code number is 144) before them in order to include additional two bytes to form longer arguments in total size of four bytes. When interpreter executing <strong>EXTENDED_ARG</strong> opcode, it will add the offset preserved by <strong>EXTENDED_ARG</strong> to get actual arguments content.</p>
-<p>For the argument column, the opcode whose code number is less than 90 (actually defined with <em>HAVE_ARGUMENT</em> enum in <em>dis</em> python code) will take no argument; whiel the code number is equal or greater than 90 will take arguments. if an opcode doesn't have any arguments will show blanks in output; otherwise a number and expression will be shown. The number shown is a zero-based index number which can retrieve local variable from the local environment. If the instruction is <strong>LOAD_COSNT</strong>, you can checkout the co_consts attribute for what will be retrieved through the argument index. If instrution is <strong>LOAD_NAME</strong>, you can checkout the co_names attribute for what will be retrieved.</p>
+<p>For the opcode name, they are actually enum-like number in the C header. You can check out the corresponding integer number in Include/opcode.h. A simple rule to guess what these opcodes do without looking up header file is to speculate on the readable instruction name. If an opcode name starts with <strong>LOAD_XXX</strong>, the functionality of this opcode is to lookup the local variable in current execution frame and push the variable onto the stack; On the other hand, if the opcode name starts with <strong>STORE_XXX</strong>, the functionality of this opcode is to pop the variable from the top of stack. But what an opcode actually does, one should refer the header file and maybe trace the C code for verification.</p>
+<p>For the offset of opcode, you can compute the size of an opcode by taking difference of two consecute opcodes offsets. For example, BINARY_ADD is an opcode of one byte size since it takes its two operands directly from the top of stack. And we can also estimate the total size of compiled byte codes should be 30 bytes. Generally speaking, the size of one opcode is not greater than 3 bytes but this can vary depending on what arguments need to be passed into opcode. The size of opcode could be bigger than three bytes as it requires longer arguments. Those opcodes of greater size will need <strong>EXTENDED_ARG</strong> (code number is 144) opcode before them. <strong>EXTENDED_ARG</strong> will help include additional two bytes to take longer arguments as large as four bytes in total. When interpreter executing <strong>EXTENDED_ARG</strong> opcode, it will add the offset preserved by <strong>EXTENDED_ARG</strong> to get actual arguments content.</p>
+<p>For the argument column, the opcode whose code number is less than 90 (actually 90 standing for opcode <strong>HAVE_ARGUMENT</strong>) will take no argument; while the code number is equal or greater than 90 will take arguments. If an opcode doesn't have any arguments, <strong>dis.dis</strong> will show blanks in output; otherwise a number and corresponding python variable will be shown in the next column. The number shown in this column is a zero-based index number which can retrieve local variable from the local environment in <strong>dis.dis</strong> case or value stack for the of interpreter. A simple way to verify argument within python environment is to look into private attributes of code object. If the instruction is <strong>LOAD_CONST</strong>, you can checkout the co_consts attribute for what will be retrieved through the argument index. If instruction is <strong>LOAD_NAME</strong>, you can checkout the co_names attribute instead.</p>
 
 </div>
 </div>
@@ -320,7 +319,7 @@ variable names used in LOAD_NAME instruciton ('x', 'y', 'print')
 <tr>
 <td>4</td>
 <td>3</td>
-<td>push a constant variable whose value is a function nameed <strong>"print"</strong> onto the top of stack</td>
+<td>push a constant variable whose value is a function named <strong>"print"</strong> onto the top of stack</td>
 <td>2</td>
 <td><code>co_obj.co_names[2]</code></td>
 </tr>
@@ -341,7 +340,7 @@ variable names used in LOAD_NAME instruciton ('x', 'y', 'print')
 <tr>
 <td>4</td>
 <td>1</td>
-<td>execute opcode <strong>BINARY_ADD</strong> by popping two variables from top of stack and push the result back onto the top of stack</td>
+<td>execute opcode <strong>BINARY_ADD</strong> by popping two variables from the top of stack and push the result back onto the top of stack</td>
 <td><em>No arguments</em></td>
 <td></td>
 </tr>
@@ -354,22 +353,23 @@ variable names used in LOAD_NAME instruciton ('x', 'y', 'print')
 </tr>
 </tbody>
 </table>
-<p>That's pretty much what these simple four line codes does in machine level. But, wait, there are additional three lines in the disassembled output. These are housekeeping codes to ensure the stack is empty and the interpreter existed with clean state.  Basically, the interpreter poping what still in the stack by exeucting one byte opcode (<strong>POP_TOP</strong>), return None if nothing to return, <strong>LOAD_CONST</strong> (three bytes) and <strong>RETURN_VALUE</strong>.</p>
-<p>But you might still feel confused what actually done at the machine level after explaning with human language. Don't worry, humans are visual specialist. Guo designs a web interface, named <a href="http://pythontutor.com">python tutor</a> to illustrate <a href="https://goo.gl/ODFPZV">what actually was done</a> in a graphical and animated way:</p>
-<p>But the actual C code handling parsing and executing byte codes is a big for-loop. Look up <strong>PyEval_EvalFrameEx</strong> in  <em>Python/ceval.c</em> function which takes a <strong>PyFrameObject</strong> pointer and returns <strong>PyObject</strong> pointer. The main loop enclosing 2000+ lines C codes to process one opcode at a time and execute the required action. You can reference supplementary readings for further information while tracing python interpreter C code via your favorite debugger.</p>
+<p>That's pretty much what these simple four line codes does in machine level. But, wait, there are additional three lines in the disassembled output. These are housekeeping codes to ensure the stack is empty and the interpreter existed with clean state.  Basically, the interpreter pops what still in the stack by exeucting one byte opcode (<strong>POP_TOP</strong>) and then returns None if nothing to return. Correponding opcodes for returning statement is <strong>LOAD_CONST</strong> (constant as None, three bytes) and <strong>RETURN_VALUE</strong>.</p>
+<p>But you might still feel confused what actually was done at the machine level after explaning with human language. Don't worry, humans are visual specialist. Guo designs a web interface, named <a href="http://pythontutor.com">python tutor</a> to illustrate <a href="https://goo.gl/ODFPZV">what actually was done</a> in a graphical and animated way.</p>
+<p>But the actual C code handling parsing and executing byte codes is a big for-loop. Look up <strong>PyEval_EvalFrameEx</strong> in  <em>Python/ceval.c</em> function which takes a <strong>PyFrameObject</strong> pointer and returns a <strong>PyObject</strong> pointer. This main loop encloses 2000+ lines of C codes in order to process one opcode at a time and execute the required logics. You can reference supplementary readings for further information while tracing python interpreter C code via your favorite debugger.</p>
 <p><em>More Later !!</em></p>
 <h4 id="References-and-supplementary-reading:">References and supplementary reading:<a class="anchor-link" href="#References-and-supplementary-reading:">¶</a>
 </h4>
 <p>The following links provide helpful insights of learning cpython and process virtual machine:</p>
 <ol>
 <li>
-<a href="https://markfaction.wordpress.com/2012/07/15/stack-based-vs-register-based-virtual-machine-architecture-and-the-dalvik-vm/">Explain stack-based and register based process virtual machien</a>: simple explanations of how process VM can be implemented in terms of what data structure is used</li>
+<a href="https://markfaction.wordpress.com/2012/07/15/stack-based-vs-register-based-virtual-machine-architecture-and-the-dalvik-vm/">Explain stack-based and register based process virtual machien</a>: simple explanations of how process VM can be implemented in terms of what data structure is used.</li>
 <li>
-<a href="https://youtu.be/mxjv9KqzwjI">Playing with Python Bytecode</a>: a funny but great PyCon presentation to explain what bytecode is. (I need to say this presentation is really in "Monty Python" spritis and expresses genuine humor which partly becomes what makes Sillicon Valley inovative companies standing out. That is freestyle and playful!) 
-<a href="https://intopython.com/">Python c api annotation</a>: colletive efforts for annotating python c api from cpython contributors </li>
+<a href="https://youtu.be/mxjv9KqzwjI">Playing with Python Bytecode</a>: a funny but great PyCon presentation to explain what bytecode is. (I need to say this presentation is really in "Monty Python" spritis. It expresses a child-like genuine humor which makes innovative companies in Sillicon Valley standing out. That is freestyle and playful!) </li>
 <li>
-<a href="https://docs.python.org/devguide/">Cpython developer guide</a>: cpython source code compilation and install cpython from source</li>
-<li>Get a <a href="https://www.evernote.com/shard/s98/sh/ab6ec4e6-85b9-43d5-9f7b-d836d12bdb88/a15ec7210742dbac">sneaky peek</a> for what was in my current course note (viewer discretion is advised, note are unorgnized and error prone)</li>
+<a href="https://intopython.com/">Python c api annotation</a>: collective efforts for annotating python c api from cpython contributors. </li>
+<li>
+<a href="https://docs.python.org/devguide/">Cpython developer guide</a>: cpython source code compilation and provide cpython  installation instruction from source.</li>
+<li>Get a <a href="https://www.evernote.com/shard/s98/sh/ab6ec4e6-85b9-43d5-9f7b-d836d12bdb88/a15ec7210742dbac">sneaky peek</a> for what was in my current course note (viewer discretion is advised, note are unorgnized and error prone).</li>
 </ol>
 </div>
 </div>
@@ -408,9 +408,9 @@ variable names used in LOAD_NAME instruciton ('x', 'y', 'print')
     <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
 
 
-        </section><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"> </script><script type="text/x-mathjax-config">
-            MathJax.Hub.Config({tex2jax: {inlineMath: [['$latex ','$'], ['\\(','\\)']]}});
-            </script></article><script>var disqus_shortname="landofplenty";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script>
+        </section><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha256-SDRP1VVYu+tgAGKhddBSl5+ezofHKZeI+OzxakbIe/Y=" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+        MathJax.Hub.Config({tex2jax: {inlineMath: [['$latex ','$'], ['\\(','\\)']]}});
+        </script></article><script>var disqus_shortname="landofplenty";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script>
 </div>
         <!--End of body content-->
 
